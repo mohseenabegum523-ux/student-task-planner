@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#6c63ff">
+  <meta name="description" content="A simple student task planner to organize assignments, exams, and study goals.">
+  <title>StudyFlow — Student Task Planner</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="#" aria-label="StudyFlow home">
+        <span class="brand-mark">✓</span>
+        <span>StudyFlow</span>
+      </a>
+      <p class="side-label">WORKSPACE</p>
+      <nav class="side-nav" aria-label="Task filters">
+        <button class="nav-item active" data-filter="all"><span>▦</span> All tasks <span class="nav-count" id="allCount">0</span></button>
+        <button class="nav-item" data-filter="pending"><span>◷</span> Pending <span class="nav-count" id="pendingCount">0</span></button>
+        <button class="nav-item" data-filter="completed"><span>✓</span> Completed <span class="nav-count" id="completedCount">0</span></button>
+      </nav>
+      <div class="sidebar-tip">
+        <div class="tip-icon">✦</div>
+        <strong>Small steps add up.</strong>
+        <p>Focus on one task at a time. You've got this!</p>
+      </div>
+      <div class="sidebar-footer"><span class="status-dot"></span> Your tasks are saved on this device</div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow" id="todayLabel">YOUR STUDY SPACE</p>
+          <h1>Let's get things done<span class="wave"> ✨</span></h1>
+          <p class="subtitle">Plan your work, track your progress, and make time for what matters.</p>
+        </div>
+        <div class="avatar" aria-label="Student profile">S</div>
+      </header>
+
+      <section class="stats-grid" aria-label="Task summary">
+        <article class="stat-card stat-purple">
+          <div class="stat-top"><span>Total tasks</span><span class="stat-icon">▦</span></div>
+          <div class="stat-number" id="totalStat">0</div>
+          <div class="stat-note">Tasks in your planner</div>
+        </article>
+        <article class="stat-card stat-orange">
+          <div class="stat-top"><span>Pending</span><span class="stat-icon">◷</span></div>
+          <div class="stat-number" id="pendingStat">0</div>
+          <div class="stat-note">Still on your to-do list</div>
+        </article>
+        <article class="stat-card stat-green">
+          <div class="stat-top"><span>Completed</span><span class="stat-icon">✓</span></div>
+          <div class="stat-number" id="completedStat">0</div>
+          <div class="stat-note">Look at you go!</div>
+        </article>
+        <article class="stat-card stat-blue">
+          <div class="stat-top"><span>Progress</span><span class="stat-icon">↗</span></div>
+          <div class="stat-number"><span id="progressStat">0</span><small>%</small></div>
+          <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+        </article>
+      </section>
+
+      <section class="content-grid">
+        <div class="tasks-panel panel">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">STAY ON TRACK</p>
+              <h2 id="listTitle">All tasks</h2>
+            </div>
+            <span class="task-total" id="visibleCount">0 tasks</span>
+          </div>
+
+          <form id="taskForm" class="task-form">
+            <div class="form-title"><span class="plus-mark">+</span> Add a new task</div>
+            <label for="taskTitle">Task name</label>
+            <input id="taskTitle" name="taskTitle" type="text" maxlength="100" placeholder="e.g. Finish DBMS assignment" required>
+            <div class="form-row">
+              <div class="form-field">
+                <label for="taskCategory">Category</label>
+                <select id="taskCategory" name="taskCategory">
+                  <option value="Assignment">Assignment</option>
+                  <option value="Study">Study</option>
+                  <option value="Exam">Exam</option>
+                  <option value="Project">Project</option>
+                  <option value="Personal">Personal</option>
+                </select>
+              </div>
+              <div class="form-field">
+                <label for="taskDate">Due date</label>
+                <input id="taskDate" name="taskDate" type="date">
+              </div>
+            </div>
+            <button class="primary-button" type="submit"><span>+</span> Add task</button>
+          </form>
+
+          <div class="list-toolbar">
+            <div class="filter-pills" role="group" aria-label="Filter task list">
+              <button class="filter-pill selected" data-filter="all">All</button>
+              <button class="filter-pill" data-filter="pending">Pending</button>
+              <button class="filter-pill" data-filter="completed">Completed</button>
+            </div>
+            <select id="sortSelect" class="sort-select" aria-label="Sort tasks">
+              <option value="date">Sort: Due date</option>
+              <option value="newest">Sort: Newest</option>
+              <option value="name">Sort: Name</option>
+            </select>
+          </div>
+          <div id="taskList" class="task-list" aria-live="polite"></div>
+          <div id="emptyState" class="empty-state">
+            <div class="empty-illustration">✎</div>
+            <h3>No tasks here yet</h3>
+            <p>Add your first task above and make today count.</p>
+          </div>
+        </div>
+
+        <aside class="right-column">
+          <section class="panel focus-panel">
+            <div class="panel-heading compact">
+              <div><p class="eyebrow">A LITTLE MOTIVATION</p><h2>Daily focus</h2></div>
+              <span class="sun-icon">☀</span>
+            </div>
+            <div class="focus-art" aria-hidden="true">
+              <div class="art-sun"></div><div class="art-book book-one"></div><div class="art-book book-two"></div><div class="art-pencil"></div>
+            </div>
+            <h3>Progress over perfection.</h3>
+            <p>Every task you finish is a step closer to your goals. Keep showing up for yourself.</p>
+          </section>
+          <section class="panel upcoming-panel">
+            <div class="panel-heading compact">
+              <div><p class="eyebrow">COMING UP</p><h2>Next deadlines</h2></div>
+              <span class="calendar-icon">▦</span>
+            </div>
+            <div id="upcomingList" class="upcoming-list"></div>
+            <p id="upcomingEmpty" class="upcoming-empty">Your upcoming deadlines will appear here.</p>
+          </section>
+        </aside>
+      </section>
+      <footer class="page-footer">Made for your next big goal <span>♥</span></footer>
+    </main>
+  </div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
